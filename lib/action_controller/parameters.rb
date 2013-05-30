@@ -52,7 +52,11 @@ module ActionController
     end
 
     def require(key)
-      self[key].presence || raise(ActionController::ParameterMissing.new(key))
+      if self[key].present? && (self[key].is_a?(ActionController::Parameters) || permitted_scalar?(self[key]))
+        self[key]
+      else
+        raise(ActionController::ParameterMissing.new(key))
+      end
     end
 
     alias :required :require

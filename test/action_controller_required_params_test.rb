@@ -18,6 +18,11 @@ class ActionControllerRequiredParamsTest < ActionController::TestCase
     assert_response :bad_request
   end
 
+  test "required parameters in wrong format will raise exception" do
+    post :create, { :book => [ { :title => "Mjallo!" } ] }
+    assert_response :bad_request
+  end
+
   test "required parameters that are present will not raise" do
     post :create, { :book => { :name => "Mjallo!" } }
     assert_response :ok
